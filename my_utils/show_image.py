@@ -26,12 +26,12 @@ class ImageShower(QWidget):
         hbox.addWidget(lbl)
         self.setLayout(hbox)
 
-        self.move(0, 0)
+        self.move(200, 200)
 
         self.setWindowTitle("Prediction")
         self.show()
 
-        QtCore.QTimer.singleShot(4000, self.close)
+        QtCore.QTimer.singleShot(3000, self.close)
 
 
 def get_random_image_path(prediction):
