@@ -1,15 +1,47 @@
 import sys
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import (QWidget, QHBoxLayout,
+    QLabel, QApplication)
+import os
+import random
 
-def show_image(image_path='/home/heider/Pictures/pandas.jpg'):
-  app = QtWidgets.QApplication(sys.argv)
-  pixmap = QtGui.QPixmap(image_path)
-  screen = QtWidgets.QLabel()
-  screen.setAlignment(QtCore.Qt.AlignCenter)
-  screen.setPixmap(pixmap)
-  screen.showFullScreen()
-  sys.exit(app.exec_())
+
+class ImageShower(QWidget):
+    def __init__(self, image_path):
+        super(ImageShower, self).__init__()
+        self.show_image(image_path)
+
+    def show_image(self, prediction):
+
+        hbox = QHBoxLayout(self)
+
+        randomImagePath = get_random_image_path(prediction)
+        print (randomImagePath)
+        pixmap = QtGui.QPixmap(randomImagePath)
+
+        lbl = QLabel(self)
+        lbl.setPixmap(pixmap)
+
+        hbox.addWidget(lbl)
+        self.setLayout(hbox)
+
+        self.move(0, 0)
+
+        self.setWindowTitle("Prediction")
+        self.show()
+
+        QtCore.QTimer.singleShot(4000, self.close)
+
+
+def get_random_image_path(prediction):
+
+    files = os.listdir(prediction)
+    index = random.randrange(0, len(files))
+    return prediction + "/" + files[index]
+
 
 if __name__ == '__main__':
-  show_image()
+    app = QApplication(sys.argv)
+    imgShower = ImageShower("snoopdog")
+    sys.exit(app.exec_())
